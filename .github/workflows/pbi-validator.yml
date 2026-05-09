@@ -7,20 +7,23 @@ jobs:
   validate:
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Run Scan
-        shell: pwsh
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Download and Run Tabular Editor (via Python)
+        shell: bash
         run: |
-          # Descarga directa sin variables para evitar recortes
-          Invoke-WebRequest 'https://github.com' -OutFile 'TE.zip'
+          # 1. Usamos Python para descargar y descomprimir (más robusto)
+          python -c "import urllib.request, zipfile, os; urllib.request.urlretrieve('https://github.com', 'TE.zip'); zipfile.ZipFile('TE.zip').extractall('TE_Folder')"
           
-          Expand-Archive TE.zip -DestinationPath TE_Folder
+          # 2. Buscamos la carpeta .SemanticModel
+          MODEL_PATH=$(find . -maxdepth 2 -name "*.SemanticModel" -type d | head -n 1)
+          echo "Analizando modelo en: $MODEL_PATH"
           
-          $model = (Get-ChildItem -Directory -Filter "*.SemanticModel")[0].FullName
-          
-          Write-Host "Analizando: $model"
-          
-          # Ejecución directa
-          ./TE_Folder/TabularEditor.exe "$model" -B "https://githubusercontent.com" -V
+          # 3. Ejecutamos el escáner
+          ./TE_Folder/TabularEditor.exe "$MODEL_PATH" -B "https://githubusercontent.com" -V
