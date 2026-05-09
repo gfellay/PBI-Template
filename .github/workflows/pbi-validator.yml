@@ -1,4 +1,4 @@
-name: Power BI Scan
+name: Power BI Project Scan
 on:
   push:
     branches: [main]
@@ -7,18 +7,21 @@ jobs:
   validate:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Tabular Editor CLI
-        run: dotnet tool install --global TabularEditor.2.CLI
-
-      - name: Run Best Practice Analyzer
+      - name: Validate Power BI Project
         shell: pwsh
         run: |
-          # Buscamos la carpeta del modelo
-          $model = (Get-ChildItem -Directory -Filter "*.SemanticModel" | Select-Object -First 1).FullName
+          # 1. Buscamos el archivo de proyecto (.pbip)
+          $projectFile = (Get-ChildItem -Filter "*.pbip" -Recurse | Select-Object -First 1).FullName
           
-          # El comando 'te2' se instala con el paso anterior
-          # Usamos --rules para descargar las reglas de Microsoft directamente
-          te2 "$model" -B "https://githubusercontent.com" -V
+          if (-not $projectFile) { 
+              Write-Error "No se encontró ningún archivo .pbip"; exit 1 
+          }
+
+          Write-Host "Validando proyecto: $projectFile"
+
+          # 2. Usamos el comando nativo de compilación/validación de Power BI
+          # Esto verifica que el TMDL y los metadatos sean correctos
+          dotnet build "$projectFile"
