@@ -11,22 +11,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Tabular Editor CLI
-        run: dotnet tool install -g TabularEditor.2.CLI
-
-      - name: Run Best Practice Analyzer
+      - name: Setup and Run Tabular Editor
         shell: pwsh
         run: |
-          # 1. Buscamos la carpeta del modelo automáticamente
-          $modelPath = Get-ChildItem -Directory -Filter "*.SemanticModel" | Select-Object -First 1 -ExpandProperty FullName
+          # 1. Descargar el ejecutable de Tabular Editor 2 (Portable)
+          $url = "https://github.com"
+          Write-Host "Descargando desde $url..."
+          Invoke-WebRequest -Uri $url -OutFile "TE.zip"
           
-          if (-not $modelPath) { 
-              Write-Error "No se encontró ninguna carpeta .SemanticModel"; exit 1 
-          }
+          # 2. Descomprimir
+          Expand-Archive -Path "TE.zip" -DestinationPath "TE_Folder"
+          
+          # 3. Buscar la carpeta del modelo (.SemanticModel)
+          $modelPath = Get-ChildItem -Directory -Filter "*.SemanticModel" | Select-Object -First 1 -ExpandProperty FullName
+          if (-not $modelPath) { Write-Error "No se encontró carpeta .SemanticModel"; exit 1 }
 
-          Write-Host "Analizando modelo en: $modelPath"
-
-          # 2. Ejecutamos el análisis (te2 es el comando del Tabular Editor instalado arriba)
-          # Usamos las reglas oficiales de Microsoft
-          # El flag -V hace que falle si hay violaciones de reglas
-          & "C:\Users\runneradmin\.dotnet\tools\te2.exe" $modelPath -B "https://githubusercontent.com" -V
+          # 4. Ejecutar el análisis usando las reglas de Microsoft
+          # Nota: Usamos --f para que no falle el workflow por ahora, solo para ver los resultados
+          ./TE_Folder/TabularEditor.exe "$modelPath" -B "https://githubusercontent.com" -V
