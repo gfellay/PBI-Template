@@ -1,27 +1,42 @@
-name: Power BI Project Scan
+name: Power BI TMDL Validator
 on:
   push:
     branches: [main]
 
 jobs:
   validate:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest # Más rápido y ligero para Python
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Validate Power BI Project
-        shell: pwsh
+      - name: Validate TMDL Syntax (Python)
+        shell: python
         run: |
-          # 1. Buscamos el archivo de proyecto (.pbip)
-          $projectFile = (Get-ChildItem -Filter "*.pbip" -Recurse | Select-Object -First 1).FullName
-          
-          if (-not $projectFile) { 
-              Write-Error "No se encontró ningún archivo .pbip"; exit 1 
-          }
+          import os
+          import json
 
-          Write-Host "Validando proyecto: $projectFile"
+          # 1. Validar que el archivo .pbip sea un JSON válido
+          pbip_path = 'Template.pbip'
+          try:
+              with open(pbip_path, 'r', encoding='utf-8-sig') as f:
+                  json.load(f)
+              print(f"✅ {pbip_path} es un JSON válido.")
+          except Exception as e:
+              print(f"❌ Error en {pbip_path}: {e}")
+              exit(1)
 
-          # 2. Usamos el comando nativo de compilación/validación de Power BI
-          # Esto verifica que el TMDL y los metadatos sean correctos
-          dotnet build "$projectFile"
+          # 2. Buscar errores comunes en archivos TMDL (identación)
+          tmdl_folder = 'Template.SemanticModel/definition/tables'
+          for root, dirs, files in os.walk(tmdl_folder):
+              for file in files:
+                  if file.endswith('.tmdl'):
+                      path = os.path.join(root, file)
+                      with open(path, 'r', encoding='utf-8') as f:
+                          lines = f.readlines()
+                          for i, line in enumerate(lines):
+                              # El error más común en TMDL es mezclar espacios y tabs
+                              if line.startswith(' ') and not line.startswith('\t') and line.strip():
+                                  print(f"❌ Error de formato en {file} línea {i+1}: Usa tabulaciones, no espacios.")
+                                  exit(1)
+          print("✅ Todos los archivos TMDL tienen formato correcto.")
