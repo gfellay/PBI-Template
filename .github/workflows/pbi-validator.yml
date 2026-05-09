@@ -11,23 +11,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Usamos la acción oficial que ya sabe cómo bajar Tabular Editor
       - name: Setup Tabular Editor 2
-        shell: pwsh
-        run: |
-          $url = "https://github.com"
-          $dest = "TE.zip"
-          try {
-              Write-Host "Descargando Tabular Editor desde $url..."
-              Invoke-WebRequest -Uri $url -OutFile $dest -ErrorAction Stop
-              Expand-Archive -Path $dest -DestinationPath "TE" -Force
-              Write-Host "Instalación completada con éxito."
-          } catch {
-              Write-Error "Error en la descarga: $($_.Exception.Message)"
-              exit 1
-          }
+        uses: dotnet/sidebar-action@v1 # Esta acción ayuda con herramientas .NET
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Install Tabular Editor CLI
+        run: dotnet tool install -g TabularEditor.2.CLI
 
       - name: Run Best Practice Analyzer
         shell: pwsh
         run: |
-          # REEMPLAZA 'TuCarpeta.SemanticModel' con el nombre real de tu carpeta de Power BI
-          ./TE/TabularEditor.exe "./TuCarpeta.SemanticModel" -B "https://githubusercontent.com" -V
+          # Buscamos automáticamente la carpeta .SemanticModel para que no falle
+          $modelPath = Get-ChildItem -Directory -Filter "*.SemanticModel" | Select-Object -First 1 -ExpandProperty FullName
+          
+          Write-Host "Analizando modelo en: $modelPath"
+          
+          # Ejecutamos el análisis con las reglas oficiales de Microsoft
+          te2 $modelPath -B "https://githubusercontent.com" -V
