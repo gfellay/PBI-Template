@@ -11,22 +11,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Usamos la acción oficial que ya sabe cómo bajar Tabular Editor
-      - name: Setup Tabular Editor 2
-        uses: dotnet/sidebar-action@v1 # Esta acción ayuda con herramientas .NET
-        with:
-          dotnet-version: '6.0.x'
-
       - name: Install Tabular Editor CLI
         run: dotnet tool install -g TabularEditor.2.CLI
 
       - name: Run Best Practice Analyzer
         shell: pwsh
         run: |
-          # Buscamos automáticamente la carpeta .SemanticModel para que no falle
+          # 1. Buscamos la carpeta del modelo automáticamente
           $modelPath = Get-ChildItem -Directory -Filter "*.SemanticModel" | Select-Object -First 1 -ExpandProperty FullName
           
+          if (-not $modelPath) { 
+              Write-Error "No se encontró ninguna carpeta .SemanticModel"; exit 1 
+          }
+
           Write-Host "Analizando modelo en: $modelPath"
-          
-          # Ejecutamos el análisis con las reglas oficiales de Microsoft
-          te2 $modelPath -B "https://githubusercontent.com" -V
+
+          # 2. Ejecutamos el análisis (te2 es el comando del Tabular Editor instalado arriba)
+          # Usamos las reglas oficiales de Microsoft
+          # El flag -V hace que falle si hay violaciones de reglas
+          & "C:\Users\runneradmin\.dotnet\tools\te2.exe" $modelPath -B "https://githubusercontent.com" -V
