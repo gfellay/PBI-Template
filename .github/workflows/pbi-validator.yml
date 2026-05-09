@@ -10,20 +10,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+      - name: Install Tabular Editor CLI
+        run: dotnet tool install --global TabularEditor.2.CLI
 
-      - name: Download and Run Tabular Editor (via Python)
-        shell: bash
+      - name: Run Best Practice Analyzer
+        shell: pwsh
         run: |
-          # 1. Usamos Python para descargar y descomprimir (más robusto)
-          python -c "import urllib.request, zipfile, os; urllib.request.urlretrieve('https://github.com', 'TE.zip'); zipfile.ZipFile('TE.zip').extractall('TE_Folder')"
+          # Buscamos la carpeta del modelo
+          $model = (Get-ChildItem -Directory -Filter "*.SemanticModel" | Select-Object -First 1).FullName
           
-          # 2. Buscamos la carpeta .SemanticModel
-          MODEL_PATH=$(find . -maxdepth 2 -name "*.SemanticModel" -type d | head -n 1)
-          echo "Analizando modelo en: $MODEL_PATH"
-          
-          # 3. Ejecutamos el escáner
-          ./TE_Folder/TabularEditor.exe "$MODEL_PATH" -B "https://githubusercontent.com" -V
+          # El comando 'te2' se instala con el paso anterior
+          # Usamos --rules para descargar las reglas de Microsoft directamente
+          te2 "$model" -B "https://githubusercontent.com" -V
