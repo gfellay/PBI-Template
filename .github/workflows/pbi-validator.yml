@@ -1,24 +1,23 @@
-name: Power BI TMDL & Project Scan
+name: Power BI Best Practices Scan
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   validate:
-    runs-on: windows-latest # Cambiamos a Windows porque las herramientas de PBI corren mejor ahí
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Instalamos PBI-Inspector CLI directamente (ahora se llama FabInspector)
-      - name: Install FabInspector
+      # Descarga Tabular Editor 2 (Portable)
+      - name: Setup Tabular Editor
         run: |
-          dotnet tool install -g FabInspector.CLI
+          Invoke-WebRequest -Uri "https://github.com" -OutFile "TE.zip"
+          Expand-Archive -Path "TE.zip" -DestinationPath "TE"
 
-      # Ejecutamos la validación en tu carpeta de proyecto
-      - name: Run Validation
+      # Ejecuta el escáner sobre tu modelo TMDL
+      - name: Run Best Practice Analyzer
         run: |
-          fab-inspector scan --path "./" --recursive
+          ./TE/TabularEditor.exe "./TuProyecto.SemanticModel" -B "https://githubusercontent.com" -V
