@@ -1,0 +1,38 @@
+table Metrics
+	lineageTag: 02a939b0-e824-4f35-a2f1-5ffcc7bd6a5f
+
+	measure 'Costo Envío' = SUM(t_Pedidos[Costo_Envio])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 20afa503-6a29-4f9a-ae2b-3af25949df52
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Venta = SUM(t_Pedidos[Precio])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: cabfc9a2-22c5-4e08-90e8-9ed1a32335b5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Costo Total' = [Venta] + [Costo Envío]
+		formatString: #,0.00
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: 400aaefb-1f78-4329-8955-05e56ab87269
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Metrics = calculated
+		mode: import
+		source = 
+				ROW(
+					"Column", BLANK()
+				)
+
+	annotation PBI_Id = cb5208f190ad4297a158c8a004c20bb6
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}

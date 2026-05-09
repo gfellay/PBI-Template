@@ -1,0 +1,105 @@
+table t_Pedidos
+	lineageTag: 573d540d-5406-450e-988f-1eeb8e19cd45
+
+	column ID_Pedido
+		dataType: int64
+		formatString: 0
+		lineageTag: 55a39835-4929-4d21-8efd-3867d521b6dc
+		summarizeBy: sum
+		sourceColumn: ID_Pedido
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fecha_Venta
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 247aa4a2-a093-4148-aced-597bd209a4b2
+		summarizeBy: none
+		sourceColumn: Fecha_Venta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Producto
+		dataType: string
+		lineageTag: 51199a57-8a0d-4b2b-94fd-bdc3a24e3b58
+		summarizeBy: none
+		sourceColumn: Producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Categoría
+		dataType: string
+		lineageTag: 1bc114ac-1f47-4ef8-9a4e-e1480cfd94e9
+		summarizeBy: none
+		sourceColumn: Categoría
+
+		annotation SummarizationSetBy = Automatic
+
+	column Vendedor
+		dataType: string
+		lineageTag: d68fb7a5-15d9-4bde-981a-34ac62dce1f3
+		summarizeBy: none
+		sourceColumn: Vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column Precio
+		dataType: double
+		lineageTag: 065177bf-141f-4b92-ae1f-c14b17ef6d30
+		summarizeBy: sum
+		sourceColumn: Precio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Costo_Envio
+		dataType: double
+		lineageTag: a9415acd-2dab-46f3-bc85-2528183c468d
+		summarizeBy: sum
+		sourceColumn: Costo_Envio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Provincia
+		dataType: string
+		lineageTag: 4bbbe3a5-531e-499d-8fcb-e1c5dcb9ed16
+		summarizeBy: none
+		sourceColumn: Provincia
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fecha_Entrega_Real
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4f055652-1d8f-441e-aa98-9e575a305706
+		summarizeBy: none
+		sourceColumn: Fecha_Entrega_Real
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition t_Pedidos = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\gfell\OneDrive\UNGS\UNGS - Análisis de Datos para la Toma de Decisiones I\Práctica\Dataset_Examen_Meli.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Fecha_Venta", type date}, {"Fecha_Entrega_Real", type date}, {"Costo_Envio", type number}, {"Precio", type number}, {"Provincia", type text}, {"Vendedor", type text}, {"Categoría", type text}, {"Producto", type text}, {"ID_Pedido", Int64.Type}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type","ELECTRO","Electrónica",Replacer.ReplaceText,{"Categoría"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","electrónica","Electrónica",Replacer.ReplaceText,{"Categoría"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value1", each ([Precio] > 0)),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Precio] > 0 and [Precio] <= 100000)
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

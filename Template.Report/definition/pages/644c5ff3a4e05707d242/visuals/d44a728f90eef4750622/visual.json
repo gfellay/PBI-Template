@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "name": "d44a728f90eef4750622",
+  "position": {
+    "x": 891.37087703744282,
+    "y": 100.11774343536496,
+    "z": 1002,
+    "height": 300.35323030609487,
+    "width": 388.62912296255718
+  },
+  "visual": {
+    "visualType": "card",
+    "autoSelectVisualType": true,
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Metrics"
+                    }
+                  },
+                  "Property": "Costo Envío"
+                }
+              },
+              "queryRef": "Metrics.Costo Envío",
+              "nativeQueryRef": "Costo Envío"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "29551ff60bcb8739ac24",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metrics"
+              }
+            },
+            "Property": "Costo Envío"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
