@@ -1,31 +1,26 @@
-name: Power BI Best Practices Scan
-
+name: Power BI Scan
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
   validate:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup and Run Tabular Editor
+      - name: Run Scan
         shell: pwsh
         run: |
-          # 1. Descargar el ejecutable de Tabular Editor 2 (Portable)
-          $url = "https://github.com"
-          Write-Host "Descargando desde $url..."
-          Invoke-WebRequest -Uri $url -OutFile "TE.zip"
+          # Descarga directa sin variables para evitar recortes
+          Invoke-WebRequest 'https://github.com' -OutFile 'TE.zip'
           
-          # 2. Descomprimir
-          Expand-Archive -Path "TE.zip" -DestinationPath "TE_Folder"
+          Expand-Archive TE.zip -DestinationPath TE_Folder
           
-          # 3. Buscar la carpeta del modelo (.SemanticModel)
-          $modelPath = Get-ChildItem -Directory -Filter "*.SemanticModel" | Select-Object -First 1 -ExpandProperty FullName
-          if (-not $modelPath) { Write-Error "No se encontró carpeta .SemanticModel"; exit 1 }
-
-          # 4. Ejecutar el análisis usando las reglas de Microsoft
-          # Nota: Usamos --f para que no falle el workflow por ahora, solo para ver los resultados
-          ./TE_Folder/TabularEditor.exe "$modelPath" -B "https://githubusercontent.com" -V
+          $model = (Get-ChildItem -Directory -Filter "*.SemanticModel")[0].FullName
+          
+          Write-Host "Analizando: $model"
+          
+          # Ejecución directa
+          ./TE_Folder/TabularEditor.exe "$model" -B "https://githubusercontent.com" -V
