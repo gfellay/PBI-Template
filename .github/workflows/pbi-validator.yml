@@ -11,13 +11,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Descarga Tabular Editor 2 (Portable)
-      - name: Setup Tabular Editor
+      - name: Setup Tabular Editor 2
+        shell: pwsh
         run: |
-          Invoke-WebRequest -Uri "https://github.com" -OutFile "TE.zip"
-          Expand-Archive -Path "TE.zip" -DestinationPath "TE"
+          $url = "https://github.com"
+          $dest = "TE.zip"
+          try {
+              Write-Host "Descargando Tabular Editor desde $url..."
+              Invoke-WebRequest -Uri $url -OutFile $dest -ErrorAction Stop
+              Expand-Archive -Path $dest -DestinationPath "TE" -Force
+              Write-Host "Instalación completada con éxito."
+          } catch {
+              Write-Error "Error en la descarga: $($_.Exception.Message)"
+              exit 1
+          }
 
-      # Ejecuta el escáner sobre tu modelo TMDL
       - name: Run Best Practice Analyzer
+        shell: pwsh
         run: |
-          ./TE/TabularEditor.exe "./TuProyecto.SemanticModel" -B "https://githubusercontent.com" -V
+          # REEMPLAZA 'TuCarpeta.SemanticModel' con el nombre real de tu carpeta de Power BI
+          ./TE/TabularEditor.exe "./TuCarpeta.SemanticModel" -B "https://githubusercontent.com" -V
