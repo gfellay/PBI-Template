@@ -28,7 +28,7 @@ table Metrics
 
 	partition Metrics = calculated
 		mode: import
-		source = 
+		source =
 				ROW(
 					"Column", BLANK()
 				)
@@ -36,3 +36,4 @@ table Metrics
 	annotation PBI_Id = cb5208f190ad4297a158c8a004c20bb6
 
 	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+
