@@ -20,7 +20,7 @@ jobs:
 
       - name: Descargar Motor Documentador
         # Descarga el script desde tu repositorio de herramientas
-        run: curl -L -o documenter.py https://githubusercontent.com
+        run: curl -L -o documenter.py https://raw.githubusercontent.com
 
       - name: Ejecutar Documentador
         # Ejecuta el script sobre el directorio actual (.)
