@@ -10,6 +10,14 @@ jobs:
     steps:
       - name: Checkout del Proyecto Power BI
         uses: actions/checkout@v4
+        with:
+          path: main-project # Ponemos el reporte en esta carpeta
+
+      - name: Checkout del Motor Documentador
+        uses: actions/checkout@v4
+        with:
+          repository: gfellay/pbi-tmdl-documenter
+          path: tools # Ponemos tu script en esta carpeta
 
       - name: Configurar Python
         uses: actions/setup-python@v4
@@ -19,17 +27,10 @@ jobs:
       - name: Instalar dependencias
         run: pip install pandas openpyxl
 
-      - name: Descargar Motor Documentador
-        shell: python
-        run: |
-          import urllib.request
-          # Esta es la URL de tu repositorio gfellay/pbi-tmdl-documenter
-          url = "https://githubusercontent.com"
-          urllib.request.urlretrieve(url, "documenter.py")
-          print("✅ Script descargado correctamente")
-
       - name: Ejecutar Documentador
-        run: python documenter.py .
+        run: |
+          # Ejecutamos el script que está en 'tools' sobre la carpeta 'main-project'
+          python tools/documenter.py main-project
 
       - name: Guardar Excel como Artefacto
         uses: actions/upload-artifact@v4
