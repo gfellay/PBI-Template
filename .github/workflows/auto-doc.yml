@@ -29,12 +29,17 @@ jobs:
 
       - name: Ejecutar Documentador
         run: |
-          # Ejecutamos el script que está en 'tools' sobre la carpeta 'main-project'
-          python tools/documenter.py main-project
+          # Entramos a la carpeta del proyecto para que el Excel se genere ahí
+          cd main-project
+          python ../tools/documenter.py .
+          # Movemos el Excel un nivel arriba (a la raíz del runner)
+          mv Documentacion_PBI.xlsx ../
+          cd ..
 
       - name: Guardar Excel como Artefacto
         uses: actions/upload-artifact@v4
         with:
           name: Documentacion-Tecnica
-          path: Documentacion_PBI_Final.xlsx
+          path: Documentacion_PBI.xlsx # Ahora sí estará aquí
           retention-days: 30
+
