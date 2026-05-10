@@ -1,0 +1,34 @@
+name: Auto-Documentation Power BI
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del Proyecto Power BI
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependencias
+        run: pip install pandas openpyxl
+
+      - name: Descargar Motor Documentador
+        # Descarga el script desde tu repositorio de herramientas
+        run: curl -L -o documenter.py https://githubusercontent.com
+
+      - name: Ejecutar Documentador
+        # Ejecuta el script sobre el directorio actual (.)
+        run: python documenter.py .
+
+      - name: Guardar Excel como Artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: Documentacion-Tecnica
+          path: Documentacion_PBI_Final.xlsx
+          retention-days: 30

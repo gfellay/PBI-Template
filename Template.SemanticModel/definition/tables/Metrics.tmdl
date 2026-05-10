@@ -15,6 +15,7 @@ table Metrics
 
 	measure 'Costo Total' = [Venta] + [Costo Envío]
 		formatString: #,0.00
+		lineageTag: b393429d-77bf-493c-a7a9-6552758d2ba6
 
 	column Column
 		isHidden
