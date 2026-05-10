@@ -2,6 +2,7 @@ name: Auto-Documentation Power BI
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -19,11 +20,15 @@ jobs:
         run: pip install pandas openpyxl
 
       - name: Descargar Motor Documentador
-        # Descarga el script desde tu repositorio de herramientas
-        run: curl -L -o documenter.py https://raw.githubusercontent.com
+        shell: python
+        run: |
+          import urllib.request
+          # Esta es la URL de tu repositorio gfellay/pbi-tmdl-documenter
+          url = "https://githubusercontent.com"
+          urllib.request.urlretrieve(url, "documenter.py")
+          print("✅ Script descargado correctamente")
 
       - name: Ejecutar Documentador
-        # Ejecuta el script sobre el directorio actual (.)
         run: python documenter.py .
 
       - name: Guardar Excel como Artefacto
