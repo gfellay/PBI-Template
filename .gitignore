@@ -9,3 +9,6 @@
 
 # Carpetas temporales de diagnóstico
 **/temp/
+
+#Archivos varios
+**/Documentacion_PBI.xlsx

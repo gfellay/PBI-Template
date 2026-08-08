@@ -10,9 +10,8 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode","TMDLView_Desktop","TMDL-Extension"]
 
-annotation PBI_QueryOrder = ["t_Pedidos"]
+annotation PBI_QueryOrder = ["p_Desarrollo","fnCalendario","fnLimitarCantidadDeRegistros"]
 
-ref table t_Pedidos
 ref table Metrics
 
 ref cultureInfo en-US

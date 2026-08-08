@@ -39,6 +39,12 @@ jobs:
           mv Documentacion_PBI.xlsx ../
           cd ..
 
+      - name: Verificar archivos generados
+        run: |
+          pwd
+          ls -lah
+          find . -name "*.xlsx"
+
       - name: Guardar Excel como Artefacto
         uses: actions/upload-artifact@v4
         with:
