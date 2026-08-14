@@ -1,21 +1,11 @@
 table Metrics
 	lineageTag: 02a939b0-e824-4f35-a2f1-5ffcc7bd6a5f
 
-	measure 'Costo Envío' = SUM(t_Pedidos[Costo_Envio])
-		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
-		lineageTag: 20afa503-6a29-4f9a-ae2b-3af25949df52
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure Venta = SUM(t_Pedidos[Precio])
-		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
-		lineageTag: cabfc9a2-22c5-4e08-90e8-9ed1a32335b5
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	measure 'Costo Total' = [Venta] + [Costo Envío]
-		formatString: #,0.00
-		lineageTag: b393429d-77bf-493c-a7a9-6552758d2ba6
+	measure 'Fecha Actualización' =
+			"Act. el: " &
+			                        FORMAT(MAX('Update'[Update]),
+			                            "dd-MM-yy")
+		lineageTag: fa40d680-8fb5-4b8e-930c-1ddce031806e
 
 	column Column
 		isHidden

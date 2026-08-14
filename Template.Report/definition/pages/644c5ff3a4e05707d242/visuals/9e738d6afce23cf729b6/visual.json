@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.8.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "9e738d6afce23cf729b6",
   "position": {
     "x": 1204.6425258513268,
@@ -7,7 +7,7 @@
     "z": 1000,
     "height": 59.747685598524249,
     "width": 59.747685598524249,
-    "tabOrder": 2
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "image",
@@ -27,7 +27,7 @@
                 "name": {
                   "expr": {
                     "Literal": {
-                      "Value": "'Filtro_3rayas.png'"
+                      "Value": "'Filtros.png'"
                     }
                   }
                 },
@@ -36,7 +36,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "Filtro_3rayas11510868169667832.png"
+                      "ItemName": "Filtros48013329738114263.png"
                     }
                   }
                 },

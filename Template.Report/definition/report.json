@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
   "themeCollection": {
     "baseTheme": {
       "name": "Fluent2-CY26SU04",
@@ -61,8 +61,8 @@
           "type": "Image"
         },
         {
-          "name": "Filtro_3rayas11510868169667832.png",
-          "path": "Filtro_3rayas11510868169667832.png",
+          "name": "Filtros48013329738114263.png",
+          "path": "Filtros48013329738114263.png",
           "type": "Image"
         }
       ]

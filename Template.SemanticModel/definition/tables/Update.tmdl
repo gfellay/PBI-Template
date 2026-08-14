@@ -1,0 +1,26 @@
+table Update
+	lineageTag: c45530c9-cb3c-491a-b1a7-b2abbe344f81
+
+	column Update
+		dataType: string
+		lineageTag: a4bf16d8-1c86-4002-9fba-72b8ff8410b0
+		summarizeBy: none
+		sourceColumn: Update
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Update = m
+		mode: import
+		source =
+				let
+				    // URL de la API de TimeZoneDB
+				    Source = Json.Document(Web.Contents("http://api.timezonedb.com/v2.1/get-time-zone?key=DHL8XQN05UBC&format=json&by=zone&zone=America/Mexico_City")),
+				    // Extraer la fecha y hora actual en Ciudad de México
+				    DateTimeMexicoCity = Source[formatted]
+				in
+				    DateTimeMexicoCity
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

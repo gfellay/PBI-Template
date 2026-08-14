@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "0a9fb564a1076641e2c7",
+  "position": {
+    "x": 99.256861019258466,
+    "y": 99.256861019258466,
+    "z": 1000,
+    "height": 327.23746367286776,
+    "width": 904.16796834730758,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "BORRAR ESTO Y COMENZAR A TRABAJAR",
+                    "textStyle": {
+                      "fontSize": "36pt",
+                      "color": "#de6a73"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

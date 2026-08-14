@@ -10,9 +10,10 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode","TMDLView_Desktop","TMDL-Extension"]
 
-annotation PBI_QueryOrder = ["p_Desarrollo","fnCalendario","fnLimitarCantidadDeRegistros"]
+annotation PBI_QueryOrder = ["p_Desarrollo","fnCalendario","fnLimitarCantidadDeRegistros","Update"]
 
 ref table Metrics
+ref table Update
 
 ref cultureInfo en-US
 
