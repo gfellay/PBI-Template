@@ -1,0 +1,117 @@
+table dim_LOC
+	lineageTag: 36d1a145-b870-408b-af37-383f1c043f09
+
+	column LOC
+		dataType: string
+		lineageTag: d121e27f-ebc3-4588-82e8-0359352e6fc3
+		summarizeBy: none
+		sourceColumn: LOC
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOC_SAP
+		dataType: string
+		lineageTag: 27b2b875-01f0-4317-9438-e0e70d5b2c60
+		summarizeBy: none
+		sourceColumn: LOC_SAP
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOCATION
+		dataType: string
+		lineageTag: 173285c0-ce81-438d-8092-eee3af22d104
+		summarizeBy: none
+		sourceColumn: LOCATION
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOC_TYPE
+		dataType: string
+		lineageTag: 3ea024d2-3335-4a19-a613-da78dd25b94d
+		summarizeBy: none
+		sourceColumn: LOC_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY
+		dataType: string
+		lineageTag: c1a2d330-6138-4f16-98e2-1900273cb036
+		summarizeBy: none
+		sourceColumn: COUNTRY
+
+		annotation SummarizationSetBy = Automatic
+
+	column OU
+		dataType: string
+		lineageTag: dd6edd40-6b24-446b-91f4-8e9e1e0220ea
+		summarizeBy: none
+		sourceColumn: OU
+
+		annotation SummarizationSetBy = Automatic
+
+	column REGION
+		dataType: string
+		lineageTag: 7484a20d-658e-4693-9b2d-840c0a9fd53a
+		summarizeBy: none
+		sourceColumn: REGION
+
+		annotation SummarizationSetBy = Automatic
+
+	column DP_ALT
+		dataType: string
+		lineageTag: 38fb0952-c8d5-4c86-bd40-c439a3a558b2
+		summarizeBy: none
+		sourceColumn: DP_ALT
+
+		annotation SummarizationSetBy = Automatic
+
+	column STATUS
+		dataType: string
+		lineageTag: b09a2507-db84-448d-9015-4b985a103c6e
+		summarizeBy: none
+		sourceColumn: STATUS
+
+		annotation SummarizationSetBy = Automatic
+
+	column LATITUD
+		dataType: double
+		lineageTag: 8a6b7bc2-86c9-4767-a88a-45a0cb561441
+		summarizeBy: sum
+		sourceColumn: LATITUD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LONGITUD
+		dataType: double
+		lineageTag: 6ccf155d-6391-4031-ba1a-577277163e07
+		summarizeBy: sum
+		sourceColumn: LONGITUD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PALLETCAP
+		dataType: double
+		lineageTag: 00814509-63bd-443a-90ab-35eb981fe682
+		summarizeBy: sum
+		sourceColumn: PALLETCAP
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_LOC = m
+		mode: import
+		source =
+				let
+				    Origen = Oracle.Database("DBLIVEDG", [HierarchicalNavigation=true, Query="SELECT#(lf)    loc_cd loc#(lf)    ,loc_sap#(lf)    ,DESCR location#(lf)    ,loc_type#(lf)    ,country #(lf)    ,CASE #(lf)    #(tab)WHEN country = 'MX' THEN 'PMF'#(lf)    #(tab)WHEN country = 'BR' THEN 'PBF'#(lf) #(tab)#(tab)WHEN country IN ('AR', 'CL', 'UY', 'PY') THEN#(tab)'SOCO'#(lf) #(tab)#(tab)WHEN country IN ('CO', 'EC', 'PE', 'VE', 'BO')#(tab)THEN 'ANDINOS'#(lf) #(tab)#(tab)WHEN country IN ('GT', 'DO', 'PR', 'SV', 'PA', 'NI', 'CR', 'HN', 'RC') THEN 'CARICAM'#(lf) #(tab)#(tab)ELSE 'REVISAR'#(tab)#(tab)#(lf) #(tab)END AS ""OU""#(lf) #(tab),upper(region) region#(lf) #(tab),DP_ALT #(lf) #(tab),status#(lf) #(tab),LATITUD #(lf) #(tab),LONGITUD#(lf) #(tab), PALLETCAP #(lf)FROM#(lf)    apexstg.a_loc#(lf)WHERE#(lf)    loc_type NOT IN ('SU', 'CB')#(lf)AND status != 0", CreateNavigationProperties=false])
+				in
+				    Origen
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

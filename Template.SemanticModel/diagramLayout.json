@@ -10,13 +10,12 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 0
+            "x": 284,
+            "y": 122
           },
-          "nodeIndex": "t_Pedidos",
-          "nodeLineageTag": "573d540d-5406-450e-988f-1eeb8e19cd45",
+          "nodeIndex": "Metrics",
           "size": {
-            "height": 296,
+            "height": 200,
             "width": 234
           },
           "zIndex": 0
@@ -24,11 +23,37 @@
         {
           "location": {
             "x": 284,
-            "y": 48
+            "y": 122
           },
-          "nodeIndex": "Metrics",
+          "nodeIndex": "Update",
+          "nodeLineageTag": "c45530c9-cb3c-491a-b1a7-b2abbe344f81",
           "size": {
-            "height": 200,
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 284,
+            "y": 0
+          },
+          "nodeIndex": "dim_ITEM",
+          "nodeLineageTag": "01fe806a-dc1a-4efd-82de-f37b0818d4c7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 568,
+            "y": 0
+          },
+          "nodeIndex": "dim_LOC",
+          "size": {
+            "height": 300,
             "width": 234
           },
           "zIndex": 0

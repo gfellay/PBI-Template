@@ -1,0 +1,178 @@
+table dim_ITEM
+	lineageTag: 01fe806a-dc1a-4efd-82de-f37b0818d4c7
+
+	column ITEMGROUP
+		dataType: string
+		lineageTag: 6995d1e6-4856-4a1c-8f51-a43695c9a680
+		summarizeBy: none
+		sourceColumn: ITEMGROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column ITEM_SAP
+		dataType: string
+		lineageTag: f8df8cbe-b985-4faf-adad-83aed13657b9
+		summarizeBy: none
+		sourceColumn: ITEM_SAP
+
+		annotation SummarizationSetBy = Automatic
+
+	column CLAVE_SAP
+		dataType: string
+		lineageTag: 8e857f05-64e6-4076-bceb-034ca4afb233
+		summarizeBy: none
+		sourceColumn: CLAVE_SAP
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCTO
+		dataType: string
+		lineageTag: 69141999-5400-4840-b795-eb32cf9df5a0
+		summarizeBy: none
+		sourceColumn: PRODUCTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column ITEM_TYPE
+		dataType: string
+		lineageTag: 74f82a58-9a70-46d2-8fee-7efe0ca2aa6f
+		summarizeBy: none
+		sourceColumn: ITEM_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column UMB
+		dataType: string
+		lineageTag: 6aeb23fc-2f0b-46a4-a1c2-0fb6b25f4868
+		summarizeBy: none
+		sourceColumn: UMB
+
+		annotation SummarizationSetBy = Automatic
+
+	column BU
+		dataType: string
+		lineageTag: 550febf3-0ba9-42d7-a579-80601afcfc5a
+		summarizeBy: none
+		sourceColumn: BU
+
+		annotation SummarizationSetBy = Automatic
+
+	column BRAND_GROUP
+		dataType: string
+		lineageTag: 336c8369-645f-4bc3-9dc2-00a47c064de1
+		summarizeBy: none
+		sourceColumn: BRAND_GROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column BRAND
+		dataType: string
+		lineageTag: 928d9b98-c00c-416b-a1f5-801cd3213b1a
+		summarizeBy: none
+		sourceColumn: BRAND
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUB_BRAND
+		dataType: string
+		lineageTag: 4983035d-fd75-40c6-915a-7dd1d4455603
+		summarizeBy: none
+		sourceColumn: SUB_BRAND
+
+		annotation SummarizationSetBy = Automatic
+
+	column TECNOLOGIA
+		dataType: string
+		lineageTag: 35ea661a-10fa-436f-b624-7f6f4cb97010
+		summarizeBy: none
+		sourceColumn: TECNOLOGIA
+
+		annotation SummarizationSetBy = Automatic
+
+	column DEPARTAMENTO
+		dataType: string
+		lineageTag: 81427131-1603-4636-946b-82a771dbb5db
+		summarizeBy: none
+		sourceColumn: DEPARTAMENTO
+
+		annotation SummarizationSetBy = Automatic
+
+	column SHAPE
+		dataType: string
+		lineageTag: ca7a1da8-6135-4388-b8a8-939bef051c0a
+		summarizeBy: none
+		sourceColumn: SHAPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column FLAVOR
+		dataType: string
+		lineageTag: 3bfd6f3c-b41f-44e7-9dce-1756f3995ab2
+		summarizeBy: none
+		sourceColumn: FLAVOR
+
+		annotation SummarizationSetBy = Automatic
+
+	column EACHXBOX
+		dataType: double
+		lineageTag: 9c12fe85-62da-4c58-999f-6d6f035e516b
+		summarizeBy: sum
+		sourceColumn: EACHXBOX
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GRSXBAG
+		dataType: double
+		lineageTag: efe60127-ca89-4562-b019-67f519bebfa5
+		summarizeBy: sum
+		sourceColumn: GRSXBAG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column KG_X_CS
+		dataType: double
+		lineageTag: f731675e-4894-46b9-9ba7-f3a52bb28def
+		summarizeBy: sum
+		sourceColumn: KG_X_CS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BOXXPALLET
+		dataType: double
+		lineageTag: 69576fd3-9b79-4b1a-b982-3127ca0a3e36
+		summarizeBy: sum
+		sourceColumn: BOXXPALLET
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ACTIVE
+		dataType: double
+		lineageTag: cca91ac9-4488-4aa0-9540-46f0e3c5a254
+		summarizeBy: sum
+		sourceColumn: ACTIVE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_ITEM = m
+		mode: import
+		source =
+				let
+				    Origen = Oracle.Database("DBLIVEDG", [HierarchicalNavigation=true, Query="SELECT#(lf)    i.ITEMGROUP#(lf)    ,i.ITEM_SAP#(lf)    ,i.ITEM_SAP || '_' || i.ACTIVE clave_sap#(lf)    ,i.DESCR#(tab)#(tab)producto#(lf)    ,i.ITEM_TYPE#(lf)    ,i.UMB #(lf)    ,CASE i.product_line_desc#(lf)    #(tab)WHEN 'COOKIES AND CRACKERS' THEN 'CnC'#(lf)    #(tab)WHEN 'SAVOURY SNACKS' THEN 'SALTY'#(lf)    #(tab)WHEN 'NON CARBONATED BEVERAGE(NCB)' THEN 'NCB'#(lf)    #(tab)ELSE i.product_line_desc    #(tab)#(lf)    END bu#(lf)    ,i.BRAND_GROUP_DESC#(tab)#(tab)brand_group#(lf)    ,i.BRAND_DESC#(tab)brand#(lf)    ,i.SUBBRAND_DESC#(tab)sub_brand#(lf)    ,i.CUSTOM10 AS TECNOLOGIA#(lf)    ,m.DEPT_DESCP  AS DEPARTAMENTO#(lf)    ,m.SHAPE_DESCP AS SHAPE#(lf)    ,m.FLVR_DESCP  AS FLAVOR#(lf)    ,i.EACHXBOX#(lf)    ,i.GRSXBAG#(lf)    ,i.EACHXBOX * i.GRSXBAG / 1000   kg_x_cs#(lf)    ,i.BOXXPALLET#(lf)    , i.active#(lf)FROM APEXSTG.A_ITEM_VW i#(lf)LEFT JOIN STAGING.STG_IN_MAKECODE m#(lf)    ON i.ITEMGROUP = m.PROD_CODE#(lf)WHERE i.ITEM_TYPE IN ('ZFIN', 'ZSFG')#(lf)AND i.ITEM_SAP  NOT LIKE 'NPI%'#(lf)ORDER BY i.active DESC", CreateNavigationProperties=false]),
+				    Removed_IG_Duplicates = Table.Distinct(Origen, {"ITEMGROUP"})
+				in
+				    Removed_IG_Duplicates
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
